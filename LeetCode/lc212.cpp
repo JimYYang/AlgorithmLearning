@@ -31,9 +31,9 @@ public:
 
         int n = board.size(), m = board[0].size();
         int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, 1, 0, -1};
-        vector<int> ids;
+        unordered_set<int> ids;
         function<void(int, int, Node*)> dfs = [&](int x, int y, Node *p){
-            if (p->id != -1) ids.push_back(p->id);
+            if (p->id != -1) ids.insert(p->id);
 
             char t = board[x][y];
             board[x][y] = '.';
@@ -63,7 +63,7 @@ public:
 
         vector<string> ans;
 
-        for (int &id : ids) ans.emplace_back(words[id]);
+        for (auto id : ids) ans.emplace_back(words[id]);
         return ans;
     }
 };
