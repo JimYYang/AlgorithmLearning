@@ -1,13 +1,16 @@
+using LL = long long;
+
 class Solution {
 public:
-    int climbStairs(int n) {
-        int a = 1, b = 1;
-        while (--n)
+    double myPow(double x, int n) {
+        double res = 1;
+        bool is_minus = n < 0;
+        for (LL k = (LL)abs(n); k; k >>= 1)
         {
-            int c = a + b;
-            a = b;
-            b = c;
+            if (k & 1) res *= x;
+            x *= x;
         }
-        return b;
+        if (is_minus) return 1 / res;
+        return res;
     }
 };
