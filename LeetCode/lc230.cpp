@@ -12,22 +12,21 @@
 class Solution {
 public:
     int kthSmallest(TreeNode* root, int k) {
-        vector<int> inOrder;
         stack<TreeNode*> stk;
-        int num = 0;
-        while (stk.size() || root)
+        if (!root) return -1;
+        while (root || !stk.empty())
         {
             while (root)
             {
                 stk.push(root);
                 root = root->left;
             }
-
             root = stk.top();
             stk.pop();
-            num++;
-            if (num == k)
-            return root->val;
+            if (--k == 0)
+            {
+                return root->val;
+            }
             root = root->right;
         }
         return -1;
