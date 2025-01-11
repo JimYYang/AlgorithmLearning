@@ -20,7 +20,6 @@ public:
                 dfs(x, y);
             }
         };
-
         int ans = 0;
         for (int i = 0; i < n; i++)
         {
