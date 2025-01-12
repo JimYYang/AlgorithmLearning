@@ -2,40 +2,39 @@ class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         vector<vector<int>> edges(numCourses);
-        queue<int> que;
-        vector<int> inDegree(numCourses);
-        for (int i = 0; i < prerequisites.size(); i++)
+        vector<int> inDegrees(numCourses);
+        for (auto &prerequisite : prerequisites)
         {
-            int b = prerequisites[i][0], a = prerequisites[i][1];
+            auto b = prerequisite[0], a = prerequisite[1];
             edges[a].push_back(b);
-            inDegree[b]++;
+            inDegrees[b]++;
         }
 
-        auto topSort = [&]() -> bool{
-            int cnt = 0;
+        auto topSort = [&]() {
+            queue<int> que;
+
             for (int i = 0; i < numCourses; i++)
             {
-                if (!inDegree[i])
-                {
+                if (!inDegrees[i])
                     que.push(i);
-                }
             }
 
-            while (que.size())
+            while (!que.empty())
             {
-                int cur = que.front();
+                auto cur = que.front();
                 que.pop();
-                cnt++;
-                for (int &edge : edges[cur])
+
+                numCourses--;
+                for (auto node : edges[cur])
                 {
-                    if (--inDegree[edge] == 0)
-                    {
-                        que.push(edge);
-                    }
+                    inDegrees[node]--;
+                    if (!inDegrees[node])
+                        que.push(node);
                 }
             }
-            return cnt == numCourses;
+            return numCourses == 0;
         };
+
         return topSort();
     }
 };
