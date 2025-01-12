@@ -21,30 +21,31 @@ public:
 
 class Solution {
 public:
-    // 图的遍历需要单独判重
-    unordered_map<Node*, Node*> mp;
     Node* cloneGraph(Node* node) {
-
         if (!node) return node;
+        // 遍历图可能会有环，需要判重一下
+        // 深拷贝问题，原点到新点的映射
+        unordered_map<Node*, Node*> hash;
+        function<void(Node*)> dfs = [&](Node *node) -> void {
+            hash[node] = new Node(node->val);
 
-        dfs(node);
+            for (auto &ver : node->neighbors)
+            {
+                if (hash.count(ver) == 0)
+                    dfs(ver);
+            }
+        };
 
-        for (auto &[src, dst] : mp)
+        dfs(node); // 复制所有点
+
+        for (auto &[src, dst] : hash)
         {
-            for (auto &edge : src->neighbors)
-                dst->neighbors.push_back(mp[edge]);
+            for (auto &ver : src->neighbors)
+            {
+                dst->neighbors.push_back(hash[ver]);
+            }
         }
-        return mp[node];
-    }
 
-    void dfs(Node *node)
-    {
-        if (!node) return;
-
-        mp[node] = new Node(node->val);
-
-        for (auto &edge : node->neighbors)
-            if (mp.count(edge) == 0)
-                dfs(edge);
+        return hash[node];
     }
 };
