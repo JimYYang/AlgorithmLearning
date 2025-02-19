@@ -2,33 +2,40 @@ class Solution {
 public:
     int minMutation(string startGene, string endGene, vector<string>& bank) {
         unordered_set<string> valid;
-        for (auto &s : bank) valid.insert(s);
+        for (auto &gene : bank)
+        {
+            valid.insert(gene);
+        }
 
-        unordered_map<string, int> dist;
+        array<char, 4> genes{'A', 'C', 'G', 'T'};
+
         queue<string> que;
         que.push(startGene);
+        unordered_map<string, int> dist;
         dist[startGene] = 0;
 
-        char chs[4] = {'A', 'C', 'G', 'T'};
-
-        while (que.size())
+        while (!que.empty())
         {
-            auto cur = que.front();
-            que.pop();
-
-            for (int i = 0; i < cur.size(); i++)
+            int size = que.size();
+            for (int i = 0; i < size; i++)
             {
-                string s = cur;
-                for (int j = 0; j < 4; j++)
+                auto cur = que.front();
+                que.pop();
+                int len = cur.size();
+                for (int j = 0; j < len; j++)
                 {
-                    s[i] = chs[j];
-
-                    if (valid.count(s) && dist.count(s) == 0)
+                    string s = cur;
+                    for (int k = 0; k < 4; k++)
                     {
-                        dist[s] = dist[cur] + 1;
-                        if (s == endGene)
-                            return dist[s];
-                        que.push(s);
+                        s[j] = genes[k];
+
+                        if (valid.count(s) && dist.count(s) == 0)
+                        {
+                            dist[s] = dist[cur] + 1;
+                            if (s == endGene)
+                                return dist[s];
+                            que.push(s);
+                        }
                     }
                 }
             }
