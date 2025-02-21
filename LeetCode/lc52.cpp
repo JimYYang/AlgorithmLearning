@@ -1,23 +1,31 @@
 class Solution {
 public:
     int totalNQueens(int n) {
-        vector<bool> col(n), dg(2 * n), idg(2 * n);
+       vector<bool> col(n);
+        vector<bool> dg(2 * n), rdg(2 * n);
+        int ans = 0;
+        vector<string> path(n, string(n, '.'));
 
-        function<int(int)> dfs = [&](int u) -> int {
-            if (u == n) return 1;
+        function<void(int)> dfs = [&](int u) {
+            if (u == n)
+            {
+                ++ans;
+                return;
+            }
 
-            int res = 0;
             for (int i = 0; i < n; i++)
             {
-                if (!col[i] && !dg[u - i + n] && !idg[u + i])
+                if (!col[i] && !dg[u + i] && !rdg[u - i + n])
                 {
-                    col[i] = dg[u - i + n] = idg[u + i] = true;
-                    res += dfs(u + 1); 
-                    col[i] = dg[u - i + n] = idg[u + i] = false;
+                    col[i] = dg[u + i] = rdg[u - i + n] = true;
+                    path[u][i] = 'Q';
+                    dfs(u + 1);
+                    path[u][i] = '.';
+                    col[i] = dg[u + i] = rdg[u - i + n] = false;
                 }
             }
-            return res;
         };
-        return dfs(0);
+        dfs(0);
+        return ans; 
     }
 };
