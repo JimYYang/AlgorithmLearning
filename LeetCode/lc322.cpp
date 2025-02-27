@@ -1,10 +1,10 @@
 class Solution {
 public:
     int coinChange(vector<int>& coins, int m) {
+        // 总体积恰好为m
         vector<int> f(m + 1, 1e8);
         f[0] = 0;
-
-        for (auto &coin : coins)
+        for (auto coin : coins)
         {
             for (int j = coin; j <= m; j++)
             {
