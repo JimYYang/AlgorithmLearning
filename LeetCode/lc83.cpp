@@ -14,8 +14,9 @@ public:
         ListNode *cur = head;
         while (cur)
         {
-            if (cur->next && cur->next->val == cur->val)
+            if (cur->next && cur->val == cur->next->val)
             {
+                // 跳过目前的下一个点
                 cur->next = cur->next->next;
             }
             else
