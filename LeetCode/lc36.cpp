@@ -1,25 +1,22 @@
 class Solution {
 public:
     bool isValidSudoku(vector<vector<char>>& board) {
-        int rows[9][9] = {0};
-        int columns[9][9] = {0};
-        int matrix[3][3][9] = {0};
+        std::array<std::array<bool, 9>, 9> rows{};
+        std::array<std::array<bool, 9>, 9> cols{};
+        std::array<std::array<std::array<bool, 9>, 3>, 3> subbox{};
 
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < board.size(); i++)
         {
-            for (int j = 0; j < 9; j++)
+            for (int j = 0;  j < board[0].size(); j++)
             {
-                char cur = board[i][j];
-
-                if (cur != '.')
+                if (board[i][j] != '.')
                 {
-                    int index = cur - '0' - 1;
-                    rows[i][index]++;
-                    columns[j][index]++;
-                    matrix[i / 3][j / 3][index]++;
-
-                    if (rows[i][index] > 1 || columns[j][index] > 1 || matrix[i / 3][j / 3][index] > 1)
+                    int num = board[i][j] - '1';
+                    if (rows[i][num] || cols[j][num] || subbox[i / 3][j / 3][num])
                         return false;
+                    rows[i][num] = true;
+                    cols[j][num] = true;
+                    subbox[i / 3][j / 3][num] = true;
                 }
             }
         }
