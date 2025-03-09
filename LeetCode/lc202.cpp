@@ -1,23 +1,24 @@
 class Solution {
 public:
-    int get(int n)
-    {
-        int res = 0;
-        while (n)
-        {
-            res += (n % 10) * (n % 10);
-            n /= 10;
-        }
-        return res;
-    }
     bool isHappy(int n) {
-        int fast = get(n);
-        int slow = n;
+        auto get = [](int x)
+        {
+            int res = 0;
+            while (x)
+            {
+                res += (x % 10) * (x % 10);
+                x /= 10;
+            }
+            return res;
+        };
+
+
+        int slow = get(n), fast = get(slow);
         while (slow != fast)
         {
-            fast = get(get(fast));
             slow = get(slow);
+            fast = get(get(fast));
         }
-        return fast == 1;
+        return slow == 1;
     }
 };
