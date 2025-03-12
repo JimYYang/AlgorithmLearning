@@ -7,6 +7,6 @@ public:
             if (i > maxPos) return false;
             maxPos = max(maxPos, nums[i] + i);
         }
-        return maxPos >= nums.size() - 1;
+        return maxPos >= nums.size();
     }
 };
