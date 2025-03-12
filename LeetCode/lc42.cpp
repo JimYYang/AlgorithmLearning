@@ -1,22 +1,22 @@
 class Solution {
 public:
+    // https://www.acwing.com/solution/content/121/ 这个解法
     int trap(vector<int>& height) {
-        int left = 0, right = height.size() - 1;
-        int res = 0, preMax = 0, sufMax = 0;
-        // 注意这里要写等于 最后相遇的时候也可以接水
-        while (left <= right)
+        stack<int> stk;
+        int n = height.size();
+        int ans = 0;
+        for(int i = 0; i < n; i++)
         {
-            preMax = max(preMax, height[left]);
-            sufMax = max(sufMax, height[right]);
-            if (preMax < sufMax)
+            while (!stk.empty() && height[stk.top()] <= height[i])
             {
-                res += preMax - height[left++];
+                int top1 = stk.top();
+                stk.pop();
+                if (stk.empty()) break;
+                // cout << (min(height[stk.top()], height[i]) - height[top1]) * (i - stk.top() - 1) << endl;
+                ans += (min(height[stk.top()], height[i]) - height[top1]) * (i - stk.top() - 1);
             }
-            else
-            {
-                res += sufMax - height[right--];
-            }
+            stk.push(i);
         }
-        return res;
+        return ans;
     }
 };
