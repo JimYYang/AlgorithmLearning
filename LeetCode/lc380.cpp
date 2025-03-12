@@ -1,25 +1,31 @@
 class RandomizedSet {
-    vector<int> nums;
-    unordered_map<int, int> hash;
 public:
+    vector<int> nums;
+    unordered_map<int, int> pos;
     RandomizedSet() {
-
+        
     }
     
     bool insert(int val) {
-        if (hash.count(val))
+        if (pos.count(val))
+        {
             return false;
-        hash[val] = nums.size();
+        }
+        int n = nums.size();
+        pos[val] = n;
         nums.push_back(val);
         return true;
     }
     
     bool remove(int val) {
-        if (!hash.count(val))
+        if (!pos.count(val))
             return false;
-        int id = hash[val];
-        swap(nums[id], nums.back());
-        hash.erase(val);
+        int idx = pos[val];
+        int back = nums.back();
+        pos[back] = idx;
+        std::swap(nums[idx], back);
+        nums.pop_back();
+        pos.erase(val);
         return true;
     }
     
