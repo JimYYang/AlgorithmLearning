@@ -1,23 +1,20 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        stack<string> stk;
-        stringstream ssin(s);
-
-        string word;
-        while (ssin >> word)
+        int k = 0, n = s.size();
+        for (int i = 0; i < n; i++)
         {
-            stk.push(word);
+            if (s[i] == ' ') continue;
+            int j = i, t = k;
+            while (j < n && s[j] != ' ') s[t++] = s[j++];
+            reverse(s.begin() + k, s.begin() + t);
+            s[t++] = ' ';
+            k = t;
+            i = j;
         }
-
-        string res;
-        while (stk.size())
-        {
-            res += stk.top();
-            stk.pop();
-            res += " ";
-        }
-        res.erase(res.size() - 1);
-        return res;
+        if (k) k--;
+        s.erase(s.begin() + k, s.end());
+        reverse(s.begin(), s.begin() + k);
+        return s;
     }
 };
