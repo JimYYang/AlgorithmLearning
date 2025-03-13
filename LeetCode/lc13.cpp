@@ -1,25 +1,26 @@
 class Solution {
 public:
     int romanToInt(string s) {
-        unordered_map<char, int> hash;
-        hash['I'] = 1;
-        hash['V'] = 5;
-        hash['X'] = 10;
-        hash['L'] = 50;
-        hash['C'] = 100;
-        hash['D'] = 500;
-        hash['M'] = 1000;
-
+        unordered_map<char, int> values{
+            {'I', 1},
+            {'V', 5},
+            {'X', 10},
+            {'L', 50},
+            {'C', 100},
+            {'D', 500},
+            {'M', 1000}
+        };
+        int n = s.size();
         int res = 0;
-        for (int i = 0; i < s.size(); i++)
+        for (int i = 0; i < n; i++)
         {
-            if (i + 1 < s.size() && hash[s[i]] < hash[s[i + 1]])
+            if (i + 1 < n && values[s[i + 1]] > values[s[i]])
             {
-                res -= hash[s[i]];
+                res -= values[s[i]];
             }
-            else 
+            else
             {
-                res += hash[s[i]];
+                res += values[s[i]];
             }
         }
         return res;
