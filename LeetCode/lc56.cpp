@@ -1,25 +1,29 @@
 class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(), intervals.end(), [](vector<int> &a, vector<int> &b){
+        sort(intervals.begin(), intervals.end(), [](const vector<int> &a, const vector<int>&b) {
             return a[0] < b[0];
         });
+        vector<vector<int>> res;
 
-        vector<vector<int>> ans;
+        auto it = intervals.begin();
+        int left = (*it)[0], right = (*it)[1];
 
-        ans.push_back(intervals[0]);
-
-        for (auto cur = intervals.begin(); cur != intervals.end(); cur++)
+        for (++it; it != intervals.end(); it++)
         {
-            if ((*cur)[0] <= ans.back()[1])
+            if ((*it)[0] <= right)
             {
-                ans.back()[1] = max(ans.back()[1], (*cur)[1]);
+                right = max(right, (*it)[1]);
             }
             else
             {
-                ans.push_back(*cur);
+                res.push_back({left, right});
+                left = (*it)[0];
+                right = (*it)[1];
             }
         }
-        return ans;
+        // 最后一个不要忘了
+        res.push_back({left, right});
+        return res;
     }
 };
