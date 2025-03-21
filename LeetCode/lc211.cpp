@@ -3,16 +3,17 @@ public:
     struct Node
     {
         Node *son[26];
-        bool is_end;
+        bool isEnd;
         Node ()
         {
             for (int i = 0; i < 26; i++)
             {
                 son[i] = nullptr;
             }
-            is_end = false;
+            isEnd = false;
         }
-    }*root;
+    };
+    Node *root;
 
     WordDictionary() {
         root = new Node();
@@ -20,37 +21,37 @@ public:
     
     void addWord(string word) {
         auto p = root;
-        for (auto &c : word)
+        for (auto c : word)
         {
-            int u = c - 'a';
+            int u = c  - 'a';
             if (!p->son[u]) p->son[u] = new Node();
             p = p->son[u];
         }
-        p->is_end = true;
+        p->isEnd = true;
     }
     
     bool search(string word) {
-        return dfs(root, word, 0);
-    }
-
-    bool dfs(Node *p, string &word, int i)
-    {
-        if (i == word.size()) return p->is_end;
-        if (word[i] != '.')
+        function<bool(Node*, int)> dfs = [&](Node *p, int i)
         {
-            int u = word[i] - 'a';
-            if (!p->son[u]) return false;
-            return dfs(p->son[u], word, i + 1);
-        }
-        else
-        {
-            for (int j = 0; j < 26; j++)
+            if (i == word.size()) return p->isEnd;
+            if (word[i] != '.')
             {
-                if (p->son[j] && dfs(p->son[j], word, i + 1))
-                    return true; // 不能直接返回上面这个条件 要先搜到
+                int u = word[i] - 'a';
+                if (!p->son[u]) return false;
+                return dfs(p->son[u], i + 1);
+            }
+            else
+            {
+                for (int j = 0; j < 26; j++)
+                {
+                    if (p->son[j] && dfs(p->son[j], i + 1))
+                        return true;
+                }
+                return false;
             }
             return false;
-        }
+        };
+        return dfs(root, 0);
     }
 };
 
