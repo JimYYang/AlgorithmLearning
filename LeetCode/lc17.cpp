@@ -2,29 +2,30 @@ class Solution {
 public:
     vector<string> letterCombinations(string digits) {
         if (digits.empty()) return {};
-
-        string values[10]{
+        string symbols[10]{
             "", "", "abc", "def",
             "ghi", "jkl", "mno",
             "pqrs", "tuv", "wxyz"
         };
 
         vector<string> ans;
-        function<void(int, string)> dfs = [&](int u, string path)
+        string path;
+        function<void(int)> dfs = [&](int u)
         {
             if (u == digits.size())
             {
-                ans.emplace_back(path);
+                ans.push_back(path);
                 return;
             }
-
-            for (auto c : values[(digits[u] - '0')])
+            // cout << digits[u] - '0' << endl;
+            for (auto c : symbols[(digits[u] - '0')])
             {
-                dfs(u + 1, path + c);
+                path.push_back(c);
+                dfs(u + 1);
+                path.pop_back();
             }
         };
-
-        dfs(0, "");
+        dfs(0);
         return ans;
     }
 };
