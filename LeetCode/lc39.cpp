@@ -1,11 +1,12 @@
 class Solution {
 public:
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>> ans;
-        vector<int> path;
         int n = candidates.size();
 
-        function<void(int, int)> dfs = [&](int u, int left)
+        vector<vector<int>> ans;
+        vector<int> path;
+
+        function<void(int, int)> dfs = [&](int left, int u)
         {
             if (left == 0)
             {
@@ -15,15 +16,13 @@ public:
 
             for (int i = u; i < n; i++)
             {
-                if (left < candidates[i]) continue;
-
+                if (candidates[i] > left) continue;
                 path.push_back(candidates[i]);
-                dfs(i, left - candidates[i]);
+                dfs(left - candidates[i], i);
                 path.pop_back();
             }
         };
-
-        dfs(0, target);
+        dfs(target, 0);
         return ans;
     }
 };
