@@ -2,7 +2,6 @@ class Solution {
 public:
     vector<vector<int>> generate(int numRows) {
         vector<vector<int>> res;
-
         for (int i = 0; i < numRows; i++)
         {
             vector<int> line(i + 1);
@@ -11,7 +10,7 @@ public:
             {
                 line[j] = res[i - 1][j - 1] + res[i - 1][j];
             }
-            res.push_back(line);
+            res.push_back(std::move(line));
         }
         return res;
     }
