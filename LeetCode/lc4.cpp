@@ -10,19 +10,46 @@ public:
 
     int find(vector<int> &nums1, int i, vector<int> &nums2, int j, int k)
     {
-        if (nums1.size() - i > nums2.size() - j) return find(nums2, j, nums1, i, k);
+        // int n = nums1.size(), m = nums2.size();
 
-        if (k == 1)
+        // if (n - i > m - j) return find(nums2, j, nums1, i, k);
+
+        // if (n == i) return nums2[j + k - 1];
+        // if (k == 1)
+        // {
+        //     return min(nums1[i], nums2[j]);
+        // }
+
+        // int si = min(k / 2, n - i);
+        // int sj = k / 2;
+        // if (nums1[i + si - 1] < nums2[j + sj - 1])
+        // {
+        //     return find(nums1, si + i, nums2, j, k - si);
+        // }
+        // return find(nums1, i, nums2, sj + j, k - sj);
+
+        int n = nums1.size(), m = nums2.size();
+
+        
+        while (true)
         {
-            if (nums1.size() == i) return nums2[j];
-            else return min(nums1[i], nums2[j]);
-        }
+            if (n - i > m - j) return find(nums2, j, nums1, i, k);
 
-        if (nums1.size() == i) return nums2[j + k - 1];
-        int si = min((int)nums1.size(), i + k / 2);
-        int sj = j + k / 2;
-        if (nums1[si - 1] < nums2[sj - 1])
-            return find(nums1, si, nums2, j, k - (si - i));
-        return find(nums1, i, nums2, sj, k - (sj - j));
+            if (i == n) return nums2[j + k - 1];
+            if (k == 1) return min(nums1[i], nums2[j]);
+
+            int si = min(k / 2, n - i);
+            int sj = k / 2;
+            if (nums1[i + si - 1] < nums2[j + sj - 1])
+            {
+                i += si;
+                k -= si;
+            }
+            else
+            {
+                j += sj;
+                k -= sj;
+            }
+        }
     }
 };
