@@ -2,16 +2,17 @@ class Solution {
 public:
     using PII = pair<int, int>;
     int orangesRotting(vector<vector<int>>& grid) {
+        queue<PII> que;
+
+        int cnt{0};
         int n = grid.size(), m = grid[0].size();
 
-        queue<PII> que;
-        int cnt = 0;
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
             {
                 if (grid[i][j] == 1) cnt++;
-                if (grid[i][j] == 2)
+                else if (grid[i][j] == 2)
                 {
                     cnt++;
                     que.push({i, j});
@@ -19,32 +20,35 @@ public:
             }
         }
 
-        array<int, 4> dx{-1, 0, 1, 0}, dy{0, 1, 0, -1};
-
-        int res = 0;
+        int res{0};
         if (!que.empty()) res--;
+        std::array<int, 4> dx{-1, 0, 1, 0}, dy{0, 1, 0, -1}; 
+
         while (!que.empty())
         {
             int sz = que.size();
+
             res++;
             cnt -= sz;
             while (sz--)
             {
                 auto cur = que.front();
                 que.pop();
-                // 按层序遍历 每次pop在内层循环
+                int x = cur.first, y = cur.second;
                 for (int i = 0; i < 4; i++)
                 {
-                    int a = cur.first + dx[i];
-                    int b = cur.second + dy[i];
-                    if (a < 0 || a >= n || b < 0 || b >= m || grid[a][b] != 1)
+                    int a = x + dx[i];
+                    int b = y + dy[i];
+
+                    if (a < 0 || a >=n || b < 0 || b >= m || grid[a][b] != 1)
                         continue;
                     grid[a][b] = 2;
                     que.push({a, b});
                 }
             }
         }
-        if (cnt) res = -1;
+
+        if (cnt) return -1;
         return res;
     }
 };
