@@ -10,6 +10,11 @@ int main()
     cin >> s;
     int n = s.size();
 
+    // 注意是插入 不是修改
+    // 这题可以先找最长回文串len  n - len就是答案
+    // 给你一个字符串 s ，每一次操作你都可以在字符串的任意位置插入任意字符。
+    // 请你返回让 s 成为回文串的 最少操作次数
+
     // vector<vector<int>> dp(n + 1, vector<int>(n + 1));
 
     // for (int i = n - 2; i >= 0; i--)
